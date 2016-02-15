@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 09, 2016 at 09:27 PM
+-- Generation Time: Feb 15, 2016 at 10:05 PM
 -- Server version: 5.5.42
 -- PHP Version: 5.6.10
 
@@ -50,14 +50,6 @@ CREATE TABLE `msg` (
   `message` varchar(500) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `msg`
---
-
-INSERT INTO `msg` (`id`, `user_id`, `username`, `timestamp`, `user_img`, `message`) VALUES
-(1, 1, 'lahiro', '2016-02-09 20:02:40', 'https://scontent.xx.fbcdn.net/hphotos-xaf1/v/t1.0-9/11134061_421200584717899_484043004766794182_n.jpg?oh=760b4145972bca23e08000d76ef9a0ec&oe=5725AF25', 'I''m stupid'),
-(2, 3, 'keith', '2016-02-09 20:27:29', 'https://i.imgur.com/meftV0qh.jpg', 'ya we know');
-
 -- --------------------------------------------------------
 
 --
@@ -70,16 +62,14 @@ CREATE TABLE `user` (
   `password` varchar(500) NOT NULL,
   `img` varchar(500) NOT NULL,
   `admin` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`id`, `username`, `password`, `img`, `admin`) VALUES
-(1, 'lahiro', '123', 'https://scontent.xx.fbcdn.net/hphotos-xaf1/v/t1.0-9/11134061_421200584717899_484043004766794182_n.jpg?oh=760b4145972bca23e08000d76ef9a0ec&oe=5725AF25', 0),
-(2, 'jon', 'ass', 'https://scontent.xx.fbcdn.net/hphotos-xtp1/t31.0-8/11952716_10153617579667042_1252903301543164247_o.jpg', 1),
-(3, 'keith', '123', 'https://i.imgur.com/meftV0qh.jpg', 1);
+(6, 'booycheck', 'test', 'http://s3-media4.fl.yelpcdn.com/bphoto/KIMKdfEcrrXvLM-ngOz5qg/348s.jpg', 0);
 
 --
 -- Indexes for dumped tables
@@ -126,7 +116,7 @@ ALTER TABLE `msg`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- Constraints for dumped tables
 --
@@ -135,6 +125,6 @@ ALTER TABLE `user`
 -- Constraints for table `msg`
 --
 ALTER TABLE `msg`
-  ADD CONSTRAINT `msg_ibfk_3` FOREIGN KEY (`user_img`) REFERENCES `user` (`img`),
-  ADD CONSTRAINT `msg_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `msg_ibfk_2` FOREIGN KEY (`username`) REFERENCES `user` (`username`);
+  ADD CONSTRAINT `msg_ibfk_2` FOREIGN KEY (`username`) REFERENCES `user` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `msg_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `msg_ibfk_3` FOREIGN KEY (`user_img`) REFERENCES `user` (`img`) ON DELETE CASCADE ON UPDATE CASCADE;
