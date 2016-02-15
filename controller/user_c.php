@@ -9,4 +9,7 @@ if($_POST['method'] == "login") {
     get_user_by_username_password();
 }
 
+if($_POST['method'] == "view") {
+    getall_usernames();
+}
 ?>

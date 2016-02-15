@@ -4,18 +4,40 @@
         <title>Users</title>
     </head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <style>
+        img {
+            width: 50px;
+            height:auto;
+        }
+    
+    
+    </style>
     <body>
+        <h3>INSERT A USER</h3>
         <input type='text' id='username' placeholder='username'/>
         <input type='password' id='password' placeholder='password'/>
         <input type='text' id='img' placeholder='avatar'/>
         <input type='text' id='admin' placeholder='admin? 1 = yes 0 = no'/>
         <button id="sub">Register</button>
         
+        <h3>UPDATE A USER</h3>
+        <input type='text' id='login_username' placeholder='username'/>
+        <input type='password' id='login_password' placeholder='password'/>
+        <button id="login_sub">Login</button><br />
+        <br/>
+        <input type='text' id='update_username' placeholder='new username'/>
+        <input type='password' id='update_password' placeholder='new password'/>
+        <input type='text' id='update_img' placeholder='new avatar'/>
+        <input type='text' id='update_admin' placeholder='admin? 1 = yes 0 = no'/>
+        <button id="sub">Update</button>
+        
+        <div id="users"></div>
         
     </body>
     <script>
         $(document).ready(function() {
             
+            //INSERT A USER
             document.getElementById("sub").onclick = function() {
                 //connect and insert
                 $.ajax({
@@ -35,7 +57,71 @@
                 
                 });
             }
+            
+            //VIEW ALL USERS
+            $.ajax({
+                    url: "../controller/user_c.php",
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        method: "view"
+                    },
+                    success: function(resp) {
+                      for(var i = 0; i<resp.length; i++){
+                            var newdiv = document.createElement("h3");
+                            var newimg = document.createElement("div");    
+                            document.body.appendChild(newdiv);
+                            document.body.appendChild(newimg);
+                            newdiv.innerHTML = resp[i].username +" admin: "+resp[i].admin;
+                            newimg.innerHTML = "<img src="+resp[i].img+" />";
+                            
+                            newdiv.dataset.id = resp[i].id;
+                          
+                        }
+                    }
+            });
+            
+            //USER LOGIN
+            var user_id = -1;
+            document.getElementById("login_sub").onclick = function() {
+                //connect and insert
+                $.ajax({
+                    url: "../controller/user_c.php",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        method: "login",
+                        username: document.getElementById("login_username").value,
+                        password: document.getElementById("login_password").value
+                    },
+                    success: function(resp) {
+                        alert("Logged in!");
+                        console.log(resp);
+                        user_id = resp[0].id;
+                    }
+                
+                });
+            }
 
+            //UPDATE USERNAME
+              document.getElementById('user_update_but').onclick = function () {
+              var user_button = this;
+              var user_id = this.dataset.userid;
+                  $.ajax({
+                      url:"../cont/username_c.php",
+                      dataType:"json",
+                      data: {
+                          method: "update",
+                          id: user_id,
+                          username: document.getElementById("user_input").value
+                      },
+                      type:"POST",
+                      success: function(resp) {
+                          alert("UPDATED!");
+                          user_editDiv.innerHTML = document.getElementById("user_input").value
+                      }
+                  });
+              }
         });
     </script>
 </html>

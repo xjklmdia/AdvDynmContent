@@ -9,8 +9,11 @@ function insert_user() {
     $result = $db->query($query);
 }
 
-function get_users() {
-    // reads the users info from the users table
+function getall_usernames() {
+    global $db;
+    $query = "SELECT * FROM user";
+    $result = $db->query($query);
+    echo json_encode($result->fetchALL());
 }
 
 function get_user_by_username_password() {
@@ -26,8 +29,11 @@ function update_user(){
     // update info of users from the users table
 }
 
-function delete_user(){
-    // remove a row of user from the users table
+function delete_user() {
+  global $db;
+  $query = "DELETE FROM user WHERE id = ".$_POST['id']."";
+  $result = $db->query($query);
+  echo json_encode("DELETED!");
 }
 
 
