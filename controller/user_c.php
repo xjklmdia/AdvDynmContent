@@ -12,4 +12,13 @@ if($_POST['method'] == "login") {
 if($_POST['method'] == "view") {
     getall_usernames();
 }
+
+if($_POST['method'] == "update") {
+    update_user();
+}
+
+if($_POST['method'] == "delete") {
+    delete_user();
+}
+
 ?>

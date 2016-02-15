@@ -26,7 +26,9 @@ function get_user_by_username_password() {
 }
 
 function update_user(){
-    // update info of users from the users table
+    global $db;
+    $query = "UPDATE user SET username = '".$_POST['new_username']."' WHERE username = '".$_POST['username']."'";
+    $result = $db->query($query);
 }
 
 function delete_user() {
