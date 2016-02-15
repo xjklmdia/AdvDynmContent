@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Images</title>
+    </head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <body>
+        <input type='text' id='username' placeholder='username'/>
+        <input type='password' id='password' placeholder='password'/>
+        <button id="sub">Login</button>
+        
+        
+        <input type='text' id='path' placeholder='Image URL'/>
+        <input type='text' id='title' placeholder='Image Title'/>
+        <!-- <input type='text' id='userID' placeholder='User ID'/> -->
+        <button id="sub_img">Upload Image</button>
+        
+        
+    </body>
+    <script>
+        $(document).ready(function() {
+            //LOGIN FEATURE
+            
+            var user_id = -1;
+            
+            document.getElementById("sub").onclick = function() {
+                //connect and insert
+                $.ajax({
+                    url: "../controller/user_c.php",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        method: "login",
+                        username: document.getElementById("username").value,
+                        password: document.getElementById("password").value
+                    },
+                    success: function(resp) {
+                        alert("Logged in!");
+                        console.log(resp);
+                        user_id = resp[0].id;
+                    }
+                
+                });
+            }
+            
+            //INSERT IMAGE
+            document.getElementById("sub_img").onclick = function() {
+                //ajax to img controller
+                $.ajax({
+                    url: "../controller/img_c.php",
+                    type: "POST",
+                    dataType: "html",
+                    data: {
+                        method: "insert",
+                        title: document.getElementById("title").value,
+                        user_id: user_id,
+                        path: document.getElementById("path").value,
+
+                    },
+                    success: function(resp) {
+                        alert("Image Inserted!");
+                    }
+                
+                });
+            }
+
+            
+        });
+    
+    
+    
+    </script>
+</html>

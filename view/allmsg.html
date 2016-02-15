@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html ng-app="AllMsgs">
+    <head>
+        <title>All Messages</title>
+    </head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.2/angular.min.js"></script>
+    <style>
+        .icon{
+            width:100px;
+            height:auto;
+        }
+    </style>
+    <body>
+        
+        <div ng-controller="msgDisplay">
+        
+            <div ng-repeat="msg in msgs">
+                <br/><br/><img class="icon" src={{msg.img}} />
+                <span>{{msg.username}} says:</span>
+                <span>"{{msg.message}}"</span>
+                <button ng-click="clickFunction(msg.message_id)">Like!</button><br/>
+            </div><br/><br/>
+        </div>
+        
+    </body>
+    
+    <script>
+        var input = document.getElementById("input");
+        var myMod = angular.module("AllMsgs", []);
+        
+        myMod.controller("msgDisplay", ["$scope", function($scope){
+            $scope.asset = "personality";
+            $scope.clickFunction = function(id){
+                $.ajax({
+                    url:"../controller/msg_c.php",
+                    type:"POST",
+                    dataType:"html",
+                    data:{
+                        method:"like",
+                        message_id: id,
+                        user_id:7
+                    
+                },
+                    success:function(resp){
+                        alert("INSERT!");
+                }
+                })
+            },
+            
+            setInterval(function(){
+                $.ajax({
+                url:"../controller/msg_c.php",
+                dataType:"json",
+                type:"POST",
+                data:{
+                    method:"get"
+                },
+                success:function(resp){
+                    console.log(resp);
+                    $scope.msgs = resp;
+                    $scope.$apply(function(){
+                        $scope.msgs = resp;
+                    })
+                }
+                
+            })
+                
+            }, 1000)
+        }]);
+        
+    $(document).ready(function(){
+        
+       /* $.ajax({
+                    url: "../controller/msg_c.php",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        method: "get",
+                    },
+                    success: function(resp) {
+                        alert("read");
+                        for(i=0; i<resp.length; i++){
+                            var newdiv = document.createElement("h3");
+                            document.body.appendChild(newdiv);
+                            newdiv.innerHTML = resp[i].username +": "+resp[i].message;
+                        }
+                        console.log(resp);
+                    }
+                
+                });*/
+        
+    });
+    </script>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Messages</title>
+    </head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <body>
+        <input type='text' id='username' placeholder='username'/>
+        <input type='password' id='password' placeholder='password'/>
+        <button id="sub">Login</button><br />
+        <input type="text" id="message" placeholder="Message" />
+        <button id="msg_sub">Send your message</button>
+        
+    </body>
+    <script>
+        $(document).ready(function() {
+            //LOGIN FEATURE
+            
+            var user_id = -1;
+            
+            document.getElementById("sub").onclick = function() {
+                //connect and insert
+                $.ajax({
+                    url: "../controller/user_c.php",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        method: "login",
+                        username: document.getElementById("username").value,
+                        password: document.getElementById("password").value
+                    },
+                    success: function(resp) {
+                        alert("Logged in!");
+                        console.log(resp);
+                        user_id = resp[0].id;
+                    }
+                
+                });
+            }
+            
+            document.getElementById("msg_sub").onclick = function() {
+                //connect and insert
+                $.ajax({
+                    url: "../controller/msg_c.php",
+                    type: "POST",
+                    dataType: "html",
+                    data: {
+                        method: "insert",
+                        message: document.getElementById("message").value,
+                        user_id: user_id
+                    },
+                    success: function(resp) {
+                        alert("INSERT!");
+                        console.log(resp);
+                    }
+                
+                });
+            }
+
+            
+        });
+    
+    
+    
+    </script>
+</html>
