@@ -16,25 +16,30 @@ function get_messages() {
 }
 
 
-function update_message(){
+function login(){
+    global $db
+    $query = "SELECT id FROM user WHERE username = '".$_POST['username']."'AND password = '".$_POST['password']."'";
+    $result = $db ->query($query);
 
+    echo json_encode($result->fetchAll());
+}
+
+function getall_message(){
+    global $db
+    $query = "SELECT * FROM msg"
+    $result = $db->query($query);
+    
+    echo json_encode($result->FetchAll());
 }
 
 function delete_message(){
-
-}
-
-function insert_like(){
     global $db;
-    $query = "INSERT INTO likes (user_id, message_id) VALUES ('".$_POST['user_id']."', '".$_POST['message_id']."')";
-    $result = $db->query($query);
+    $query = "DELETE FROM msg WHERE id = ".$_POST['id']."";
+    $result = $db ->query($query);
+
+    echo json_encode("DELETED!");
 }
 
-function get_likes(){
-    global $db;
-    $query = "SELECT * FROM likes";
-    $result = $db->query($query);
-    echo json_encode($result->FetchAll());
-}
+
 
 ?>
