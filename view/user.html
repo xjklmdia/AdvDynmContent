@@ -22,6 +22,8 @@
         
         <h3>UPDATE A USER</h3>
         <input type='text' id='login_username' placeholder='username'/>
+        <input type='password' id='login_password' placeholder='password'/>
+        <button id="login_sub">Login</button>
         <br/>
         <input type='text' id='update_username' placeholder='new username'/>
         <input type='password' id='update_password' placeholder='new password'/>
@@ -34,7 +36,30 @@
     </body>
     <script>
         $(document).ready(function() {
-            user_id = -1;
+            
+        var user_id = -1;
+        //modify our files a little bit later
+        document.getElementById("login_sub").onclick = function(){
+            //connect and insert
+            $.ajax({
+                url:"../controller/user_c.php",
+                type:"post",
+                dataType:"json",
+                data: {
+                    method:"login",
+                    username: document.getElementById("login_username").value,
+                    password: document.getElementById("login_password").value
+                },
+                success:function(resp){
+                    alert("Logged in!");
+                    user_id = resp[0].id;
+                    console.log(user_id);
+                }
+            });
+        }
+            
+            
+            
             //INSERT A USER
             document.getElementById("sub").onclick = function() {
                 //connect and insert
@@ -107,7 +132,7 @@
             }
             viewUsers();
             
-            
+
             
             //UPDATE USERNAME
               document.getElementById('update_sub').onclick = function () {
@@ -119,7 +144,7 @@
                           method: "update",
                           new_username: document.getElementById("update_username").value,
                           new_password: document.getElementById("update_password").value,
-                          new_img: document.getElementById("update_password").value,
+                          new_img: document.getElementById("update_img").value,
                           user_id: user_id
                       },
                       type:"POST",
