@@ -18,7 +18,7 @@ function get_messages() {
 
 function login(){
     global $db
-    $query = "SELECT id FROM user WHERE username = '".$_POST['username']."'AND password = '".$_POST['password']."'";
+    $query = "SELECT id FROM user WHERE username = '".$_POST['username']."' AND password = '".$_POST['password']."'";
     $result = $db ->query($query);
 
     echo json_encode($result->fetchAll());

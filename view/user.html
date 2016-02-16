@@ -37,8 +37,9 @@
     <script>
         $(document).ready(function() {
             
+            
+        //USER LOGIN
         var user_id = -1;
-        //modify our files a little bit later
         document.getElementById("login_sub").onclick = function(){
             //connect and insert
             $.ajax({
@@ -134,7 +135,7 @@
             
 
             
-            //UPDATE USERNAME
+            //UPDATE USER
               document.getElementById('update_sub').onclick = function () {
 
                   $.ajax({
@@ -145,12 +146,13 @@
                           new_username: document.getElementById("update_username").value,
                           new_password: document.getElementById("update_password").value,
                           new_img: document.getElementById("update_img").value,
+                          new_admin: document.getElementById("update_admin").value,
                           user_id: user_id
                       },
                       type:"POST",
                       success: function(resp) {
                           alert("UPDATED!");
-                        
+                        location.reload();
                       }
                   });
               }
