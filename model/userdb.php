@@ -27,7 +27,7 @@ function get_user_by_username_password() {
 
 function update_user(){
     global $db;
-    $query = "UPDATE user SET username = '".$_POST['new_username']."' WHERE username = '".$_POST['username']."'";
+    $query = "UPDATE user SET username = '".$_POST['new_username']."' WHERE id = '".$_POST['user_id']."'";
     $result = $db->query($query);
 }
 

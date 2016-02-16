@@ -34,7 +34,7 @@
     </body>
     <script>
         $(document).ready(function() {
-            user_id = "";
+            user_id = -1;
             //INSERT A USER
             document.getElementById("sub").onclick = function() {
                 //connect and insert
@@ -120,7 +120,7 @@
                           new_username: document.getElementById("update_username").value,
                           new_password: document.getElementById("update_password").value,
                           new_img: document.getElementById("update_password").value,
-                          username: document.getElementById("login_username").value
+                          user_id: user_id
                       },
                       type:"POST",
                       success: function(resp) {
