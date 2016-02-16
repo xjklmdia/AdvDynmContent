@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Images</title>
+    </head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <body>
+        <input type='text' id='username' placeholder='username'/>
+        <input type='password' id='password' placeholder='password'/>
+        <button id="sub">Login</button><br/><br/>
+        
+        
+        <input type='text' id='path' placeholder='Image URL'/>
+        <input type='text' id='name' placeholder='Product Name'/>
+        <input type='text' id='price' placeholder='Price'/>
+        <input type='text' id='description' placeholder='Description'/>
+        <button id="sub_item">Create Item</button><br/><br/>
+        
+        <input type='text' id='old_name' placeholder='Item name'/><br/>
+        <input type='text' id='update_name' placeholder='New name'/>
+        <input type='password' id='update_price' placeholder='New price'/>
+        <input type='text' id='update_img' placeholder='New image'/>
+        <input type='text' id='update_desc' placeholder='New description'/>
+        <button id="update_sub">Update</button>
+        
+        
+        
+        
+    </body>
+    <script>
+        $(document).ready(function() {
+            
+//----------User Login--------------------------------------------------------
+            var user_id = -1;
+            document.getElementById("sub").onclick = function() {
+                $.ajax({
+                    url: "../controller/user_c.php",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        method: "login",
+                        username: document.getElementById("username").value,
+                        password: document.getElementById("password").value
+                    },
+                    success: function(resp) {
+                        alert("Logged in!");
+                        console.log(resp);
+                        user_id = resp[0].id;
+                    }
+                });
+            }
+            
+//----------Inserting Items---------------------------------------------------
+            document.getElementById("sub_item").onclick = function() {
+                $.ajax({
+                    url: "../controller/item_c.php",
+                    type: "POST",
+                    dataType: "html",
+                    data: {
+                        method: "insert",
+                        name: document.getElementById("name").value,
+                        description: document.getElementById("description").value,
+                        img: document.getElementById("path").value,
+                        price: document.getElementById("price").value
+
+                    },
+                    success: function(resp) {
+                        location.reload();
+                        //console.log(resp);
+                    }
+                });
+            }
+            
+ //----------Viewing Items-----------------------------------------------------           
+            function viewItems(){
+                $.ajax({
+                        url: "../controller/item_c.php",
+                        type: "POST",
+                        dataType: "JSON",
+                        data: {
+                            method: "view"
+                        },
+                        success: function(resp) {
+                          for(var i = 0; i<resp.length; i++){
+                                var newdiv = document.createElement("h3");
+                                var newimg = document.createElement("div");    
+                                document.body.appendChild(newdiv);
+                                document.body.appendChild(newimg);
+                                newdiv.innerHTML = resp[i].name +" - Price: $"+resp[i].price+" ";
+                                newimg.innerHTML = "<img src="+resp[i].img+" />";
+                              
+                                newdiv.dataset.id = resp[i].id;
+                                
+//----------Deleting Items----------------------------------------------------
+                              var item_del = document.createElement("button");
+                              item_del.dataset.id = resp[i].id;
+                              item_del.innerHTML = "Delete";
+                              newdiv.appendChild(item_del);
+                              
+                                  item_del.onclick = function() {
+                                      var item_id = this.dataset.id;
+                                      console.log(item_id);
+                                        $.ajax({
+                                            url: "../controller/item_c.php",
+                                            dataType: "json",
+                                            type: "POST",
+                                            data: {
+                                                method:"delete",
+                                                id: item_id
+                                            },
+                                            success: function(resp){
+                                                alert("DELETED!");
+                                                location.reload();
+                                            }
+                                        });
+                                  }
+                                  
+//----------View Single Items-------------------------------------------------
+                                  var single_item_view = document.createElement("button");
+                                  single_item_view.dataset.id = resp[i].id;
+                                  single_item_view.dataset.name = resp[i].name;
+                                  single_item_view.innerHTML = "More information";
+                                  newdiv.appendChild(single_item_view);
+                              
+                                      single_item_view.onclick = function() {
+                                          var item_id = this.dataset.id;
+                                          var item_name = this.dataset.name;
+                                          console.log(item_name);
+                                            /*$.ajax({
+                                                url: "../controller/item_c.php",
+                                                dataType: "json",
+                                                type: "POST",
+                                                data: {
+                                                    method:"single_view",
+                                                    id: item_id
+                                                },*/
+                                                    alert("This doesn't work just yet, but the product is a '" + item_name + "'.");
+
+                                            //});
+                                      }
+                          }
+                        }
+                });
+            }           
+            viewItems();
+            
+            
+            document.getElementById('update_sub').onclick = function () {
+
+                  $.ajax({
+                      url:"../controller/item_c.php",
+                      dataType:"HTML",
+                      data: {
+                          method: "update",
+                          new_name: document.getElementById("update_name").value,
+                          new_price: document.getElementById("update_price").value,
+                          new_img: document.getElementById("update_img").value,
+                          new_desc: document.getElementById("update_desc").value,
+                          name: document.getElementById("old_name").value
+                      },
+                      type:"POST",
+                      success: function(resp) {
+                          location.reload();
+                        
+                      }
+                  });
+              }
+        });
+    
+    
+    
+    </script>
+</html>
