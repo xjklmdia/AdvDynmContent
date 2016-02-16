@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 15, 2016 at 10:05 PM
+-- Generation Time: Feb 16, 2016 at 09:30 PM
 -- Server version: 5.5.42
 -- PHP Version: 5.6.10
 
@@ -44,11 +44,16 @@ INSERT INTO `item` (`id`, `name`, `description`, `price`, `img`) VALUES
 CREATE TABLE `msg` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `username` varchar(500) NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `user_img` varchar(500) NOT NULL,
   `message` varchar(500) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `msg`
+--
+
+INSERT INTO `msg` (`id`, `user_id`, `message`) VALUES
+(16, 11, 'weee'),
+(17, 11, 'sup');
 
 -- --------------------------------------------------------
 
@@ -62,14 +67,16 @@ CREATE TABLE `user` (
   `password` varchar(500) NOT NULL,
   `img` varchar(500) NOT NULL,
   `admin` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`id`, `username`, `password`, `img`, `admin`) VALUES
-(6, 'booycheck', 'test', 'http://s3-media4.fl.yelpcdn.com/bphoto/KIMKdfEcrrXvLM-ngOz5qg/348s.jpg', 0);
+(8, 'jonathan', '123', 'http://www.underconsideration.com/brandnewconference/2014/_images/speaker_lee_jonathan_lo-res.jpg', 1),
+(9, 'keith', '123', 'https://media.giphy.com/media/9MFsKQ8A6HCN2/giphy.gif', 1),
+(11, 'logan', 'balls', 'https://media.licdn.com/mpr/mpr/shrinknp_200_200/AAEAAQAAAAAAAAB4AAAAJDViYzA2MTM2LTk3ZGQtNDgxMi04YzNhLTYwZjhmY2JkZjM3OA.jpg', 1);
 
 --
 -- Indexes for dumped tables
@@ -86,9 +93,7 @@ ALTER TABLE `item`
 --
 ALTER TABLE `msg`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `user_img` (`user_img`),
-  ADD KEY `username` (`username`);
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `user`
@@ -111,12 +116,12 @@ ALTER TABLE `item`
 -- AUTO_INCREMENT for table `msg`
 --
 ALTER TABLE `msg`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
 --
 -- Constraints for dumped tables
 --
@@ -125,6 +130,4 @@ ALTER TABLE `user`
 -- Constraints for table `msg`
 --
 ALTER TABLE `msg`
-  ADD CONSTRAINT `msg_ibfk_2` FOREIGN KEY (`username`) REFERENCES `user` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `msg_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `msg_ibfk_3` FOREIGN KEY (`user_img`) REFERENCES `user` (`img`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `msg_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
