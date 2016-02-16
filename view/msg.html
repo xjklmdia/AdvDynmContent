@@ -21,7 +21,7 @@
             document.getElementById("sub").onclick = function() {
                 //connect and insert
                 $.ajax({
-                    url: "../controller/user_c.php",
+                    url: "../controller/msg_c.php",
                     type: "POST",
                     dataType: "json",
                     data: {
@@ -33,12 +33,15 @@
                         alert("Logged in!");
                         console.log(resp);
                         user_id = resp[0].id;
+                        console.log(user_id);
+   
                     }
                 
                 });
             }
             
             document.getElementById("msg_sub").onclick = function() {
+                console.log(user_id);
                 //connect and insert
                 $.ajax({
                     url: "../controller/msg_c.php",
@@ -46,18 +49,68 @@
                     dataType: "html",
                     data: {
                         method: "insert",
-                        message: document.getElementById("message").value,
-                        user_id: user_id
+                        user_id: user_id,
+                        message: document.getElementById("message").value
                     },
                     success: function(resp) {
                         alert("INSERT!");
-                        console.log(resp);
+                        console.log(user_id);
+                        location.reload();
                     }
                 
                 });
             }
 
             
+            function viewMsgs(){
+                $.ajax({
+                        url: "../controller/msg_c.php",
+                        type: "POST",
+                        dataType: "JSON",
+                        data: {
+                            method: "view"
+                        },
+                        success: function(resp)  {
+                            console.log(resp);
+                            
+                            
+                          for(var i = 0; i<resp.length; i++){
+                                var newMsg = document.createElement("div");   
+                                document.body.appendChild(newMsg);
+                                newMsg.innerHTML = "<p>"+resp[i].message+"</p>";
+                              
+                                newMsg.dataset.id = resp[i].id;
+                              
+                          
+
+                      // DELETING USERNAME
+                      var msg_del = document.createElement("button");
+                      msg_del.dataset.id = resp[i].id;
+                      msg_del.innerHTML = "Delete";
+                      newMsg.appendChild(msg_del);
+                      msg_del.onclick = function() {
+                        var user_id = this.dataset.id;
+                          console.log(user_id);
+                        $.ajax({
+                            url: "../controller/msg_c.php",
+                            dataType: "json",
+                            type: "POST",
+                            data: {
+                                method:"delete",
+                                user_id: user_id
+                            },
+                            success: function(resp){
+                                alert("DELETED!");
+                                location.reload();
+                            }
+                          
+                        });
+                    } 
+                            }
+                        }
+                });
+            }
+            viewMsgs();
         });
     
     

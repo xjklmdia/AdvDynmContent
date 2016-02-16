@@ -22,6 +22,6 @@ if($_POST['method'] == "view") {
 }
 
 if($_POST['method'] == "delete") {
-    delete_msg();
+    delete_message();
 }
 ?>
