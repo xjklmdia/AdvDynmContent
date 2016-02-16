@@ -9,12 +9,7 @@
                     float:left;
                 }
         </style>
-    <body>
-        <input type='text' id='username' placeholder='username'/>
-        <input type='password' id='password' placeholder='password'/>
-        <button id="sub">Login</button><br/><br/>
-        
-        
+<body>
         <input type='text' id='path' placeholder='Image URL'/>
         <input type='text' id='name' placeholder='Product Name'/>
         <input type='text' id='price' placeholder='Price'/>
@@ -31,26 +26,6 @@
     </body>
     <script>
         $(document).ready(function() {
-            
-//----------User Login--------------------------------------------------------
-            var user_id = -1;
-            document.getElementById("sub").onclick = function() {
-                $.ajax({
-                    url: "../controller/user_c.php",
-                    type: "POST",
-                    dataType: "json",
-                    data: {
-                        method: "login",
-                        username: document.getElementById("username").value,
-                        password: document.getElementById("password").value
-                    },
-                    success: function(resp) {
-                        alert("Logged in!");
-                        console.log(resp);
-                        user_id = resp[0].id;
-                    }
-                });
-            }
             
 //----------Inserting Items---------------------------------------------------
             document.getElementById("sub_item").onclick = function() {
@@ -86,7 +61,8 @@
                           for(var i = 0; i<resp.length; i++){
                                 var newerdiv = document.createElement("div");
                                 var newdiv = document.createElement("h3");
-                                var newimg = document.createElement("div");    
+                                var newimg = document.createElement("div");
+                                var tinyspace = document.createElement("div");
                                 document.body.appendChild(newerdiv);
                                 newerdiv.appendChild(newdiv);
                                 newerdiv.appendChild(newimg);
