@@ -31,6 +31,12 @@
         <input type='text' id='update_admin' placeholder='admin? 1 = yes 0 = no'/>
         <button id="update_sub">Update</button>
         
+        <h3>UPLOAD USER IMAGE</h3>
+        <form id='myForm'>
+            <input type='file' id='myFile' multiple>
+            <button id='upload'>Upload</button>
+        </form>
+        
         <div id="users"></div>
         
     </body>
@@ -157,7 +163,45 @@
                   });
               }
               
-            //DELETE A USERNAME  
+            //UPLOAD USER IMAGE
+            var upload = document.getElementById("upload");
+            var files = document.getElementById("myFile");
+
+            upload.onclick = function (e) {
+                e.preventDefault();
+
+                //upload the files here using another form of ajax
+
+                var formData = new FormData();
+
+                var xhr = new XMLHttpRequest();
+                var allfiles = files.files;
+                console.log(allfiles);
+
+                    for(var i=0; i<allfiles.length; i++) {
+
+                        //get individual file with var
+                        var e_file = allfiles[i];
+                        /*
+                        if (!e_file.type.match ("images/*")) {
+                            return false;
+                            alert("NO");
+                        }*/
+
+                        formData.append("images[]", e_file, "whatever.name");
+
+                        xhr.open("POST", "upload.php", true);
+                        xhr.onload = function() {
+                            if(xhr.status == 200) {
+                                alert("loaded properly");
+                            }   
+                        }
+                        xhr.send(formData);
+
+                    }
+
+                }
+            
               
         });
     </script>
