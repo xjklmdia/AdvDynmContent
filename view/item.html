@@ -8,6 +8,7 @@
             .item {
                 float:left;
                 width:33%;
+                text-align: center;
             }
             .black_overlay{
                 display: none;
@@ -54,7 +55,7 @@
     
         <div style='left-margin:auto;right-margin:auto;'>
             <div id="light" class="white_content"></div>
-            <div id="fade" class="black_overlay"></div>
+            <div id="fade" id='lightboxClose' class="black_overlay"></div>
         </div>
         
     </body>
@@ -105,7 +106,7 @@
                                 newdiv.style.textAlign = "center";
                                 newdiv.style.width = "auto";
                                 newdiv.style.height = "10vh";
-                                newimg.innerHTML = "<img style='width:auto;height:30vh;' src="+resp[i].img+" />";
+                                newimg.innerHTML = "<br><br><img style='width:auto;height:30vh;' src="+resp[i].img+" />";
                               
                                 newdiv.dataset.id = resp[i].id;
                                 
