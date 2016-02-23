@@ -44,7 +44,10 @@ INSERT INTO `item` (`id`, `name`, `description`, `price`, `img`) VALUES
 CREATE TABLE `msg` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `message` varchar(500) NOT NULL
+  `password` varchar(500) NOT NULL,
+  `message` varchar(500) NOT NULL,
+  `timestamp` int(60) NOT NULL,
+  `avatar` varchar(500) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 
 --
