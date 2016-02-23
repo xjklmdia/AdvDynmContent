@@ -104,13 +104,15 @@
                                   var single_item_view = document.createElement("button");
                                   single_item_view.dataset.id = resp[i].id;
                                   single_item_view.dataset.name = resp[i].name;
+                                  single_item_view.dataset.description = resp[i].description;
                                   single_item_view.innerHTML = "More information";
                                   newdiv.appendChild(single_item_view);
                               
                                       single_item_view.onclick = function() {
                                           var item_id = this.dataset.id;
                                           var item_name = this.dataset.name;
-                                          console.log(item_name);
+                                          var item_desc = this.dataset.description;
+                                          console.log(item_desc);
                                             /*$.ajax({
                                                 url: "../controller/item_c.php",
                                                 dataType: "json",
@@ -119,7 +121,7 @@
                                                     method:"single_view",
                                                     id: item_id
                                                 },*/
-                                                    alert("This doesn't work just yet, but the product is a " + item_name + ".");
+                                                    alert("Here is some information about the '" + item_name + "': " + item_desc);
 
                                             //});
                                       }
