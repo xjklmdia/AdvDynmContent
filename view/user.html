@@ -17,33 +17,47 @@
         <input type='text' id='username' placeholder='username'/>
         <input type='password' id='password' placeholder='password'/>
         <input type='text' id='img' placeholder='avatar'/>
-        <input type='text' id='admin' placeholder='admin? 1 = yes 0 = no'/>
         <button id="sub">Register</button>
         
-        <h3>UPDATE A USER</h3>
-        <input type='text' id='login_username' placeholder='username'/>
-        <input type='password' id='login_password' placeholder='password'/>
-        <button id="login_sub">Login</button>
-        <br/>
-        <input type='text' id='update_username' placeholder='new username'/>
-        <input type='password' id='update_password' placeholder='new password'/>
-        <input type='text' id='update_img' placeholder='new avatar'/>
-        <input type='text' id='update_admin' placeholder='admin? 1 = yes 0 = no'/>
-        <button id="update_sub">Update</button>
         
-        <h3>UPLOAD USER IMAGE</h3>
-        <form id='myForm'>
-            <input type='file' id='myFile' multiple>
-            <button id='upload'>Upload</button><br/>
-        </form>
-        
+		<h3>Login</h3>
+		<div id="login_panel">
+			<input type='text' id='login_username' placeholder='username'/>
+			<input type='password' id='login_password' placeholder='password'/>
+			<button id="login_sub">Login</button>
+		</div>
+		
+		
+		<div id="update_panel" style="display: none;">
+			<h3>Update Profile</h3>
+			<input type='text' id='update_username' placeholder='new username'/>
+			<input type='password' id='update_password' placeholder='new password'/>
+			<input type='text' id='update_img' placeholder='new avatar'/>
+			<button id="update_sub">Update</button>
+			
+			<h3>Upload an image</h3>
+			<form id='myForm'>
+				<input type='file' id='myFile' multiple>
+				<button id='upload'>Upload</button><br/>
+			</form>
+        </div>
+		
+
+		
+		    <H3>ALL USER IMGS UPLOADED</H3>
+        <div id="user_imgs"></div>
+		
+        <H3>ALL USERS</H3>
         <div id="users"></div>
         
     </body>
     <script>
         $(document).ready(function() {
-            
-            
+        var userDiv = document.getElementById("users");   
+        var userImgsDiv = document.getElementById("user_imgs");
+		var loginPanel = document.getElementById("login_panel");
+		var updatePanel = document.getElementById("update_panel");
+			
         //USER LOGIN
         var user_id = -1;
         document.getElementById("login_sub").onclick = function(){
@@ -61,11 +75,25 @@
                     alert("Logged in!");
                     user_id = resp[0].id;
                     console.log(user_id);
+					var logoutBut = document.createElement("button"); 
+					logoutBut.innerHTML = "Logout";
+					
+					loginPanel.innerHTML = "";
+					loginPanel.appendChild(logoutBut);
+					
+					updatePanel.style.display = "block";
+					//logout function
+					logoutBut.onclick = function(){
+						var user_id = -1;
+						alert("Logged Out!");
+						location.reload();
+        			}
                 }
             });
         }
-            
-            
+		
+        //USER LOGOUT
+
             
             //INSERT A USER
             document.getElementById("sub").onclick = function() {
@@ -101,8 +129,8 @@
                           for(var i = 0; i<resp.length; i++){
                                 var newdiv = document.createElement("h3");
                                 var newimg = document.createElement("div");    
-                                document.body.appendChild(newdiv);
-                                document.body.appendChild(newimg);
+                                userDiv.appendChild(newdiv);
+                               	userDiv.appendChild(newimg);
                                 newdiv.innerHTML = resp[i].username +" admin: "+resp[i].admin;
                                 newimg.innerHTML = "<img src="+resp[i].img+" />";
                               
@@ -138,9 +166,7 @@
                 });
             }
             viewUsers();
-            
-
-            
+          
             //UPDATE USER
               document.getElementById('update_sub').onclick = function () {
 
@@ -152,13 +178,17 @@
                           new_username: document.getElementById("update_username").value,
                           new_password: document.getElementById("update_password").value,
                           new_img: document.getElementById("update_img").value,
-                          new_admin: document.getElementById("update_admin").value,
                           user_id: user_id
                       },
                       type:"POST",
                       success: function(resp) {
-                          alert("UPDATED!");
-                        location.reload();
+                          alert("Profile Updated!");
+						  document.getElementById("update_username").value = "";
+						  document.getElementById("update_password").value = "";
+						  document.getElementById("update_img").value = "";
+						  userDiv.innerHTML = "";
+						  
+						  viewUsers();
                       }
                   });
               }
@@ -184,8 +214,10 @@
                         var e_file = allfiles[i];
                         
                         if (!e_file.type.match("image/*")) {
+							alert("Images Only!");
                             return false;
-                            alert("NO");
+                            
+							
                         }
 
                         formData.append("images[]", e_file, "whatever.name");
@@ -202,7 +234,32 @@
                     }
 
                 }
-            
+			
+                //VIEW ALL USER IMGS
+            function viewUserImgs(){
+                $.ajax({
+                        url: "../controller/user_c.php",
+                        type: "POST",
+                        dataType: "JSON",
+                        data: {
+                            method: "viewAllImg"
+                        },
+                        success: function(resp) {
+                          for(var i = 0; i<resp.length; i++){
+                                var newdiv = document.createElement("h3");
+                                var newimg = document.createElement("div");    
+                               userImgsDiv.appendChild(newdiv);
+                                userImgsDiv.appendChild(newimg);
+                                newdiv.innerHTML = " User ID: "+resp[i].user_id;
+                                newimg.innerHTML = "<img src="+resp[i].path+" />";
+
+                              
+         
+                            }
+                        }
+                });
+            }
+            viewUserImgs();
               
         });
     </script>

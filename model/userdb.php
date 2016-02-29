@@ -38,5 +38,10 @@ function delete_user() {
   echo json_encode("DELETED!");
 }
 
-
+function viewall_user_imgs() {
+    global $db;
+    $query = "SELECT * FROM image";
+    $result = $db->query($query);
+    echo json_encode($result->fetchALL());
+}
 ?>

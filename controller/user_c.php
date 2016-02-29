@@ -21,4 +21,8 @@ if($_POST['method'] == "delete") {
     delete_user();
 }
 
+if($_POST['method'] == "viewAllImg") {
+    viewall_user_imgs();
+}
+
 ?>
