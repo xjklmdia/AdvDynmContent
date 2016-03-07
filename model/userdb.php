@@ -40,7 +40,11 @@ function delete_user() {
 
 function viewall_user_imgs() {
     global $db;
-    $query = "SELECT * FROM image";
+    //$query = "SELECT * FROM item";
+    $query = "SELECT item.id AS item_id, item.description, item.name, item.price, item.img, user.username, item.user_id
+                FROM item
+                LEFT JOIN user ON user.id = item.user_id";
+    
     $result = $db->query($query);
     echo json_encode($result->fetchALL());
 }

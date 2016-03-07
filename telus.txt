@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 23, 2016 at 09:09 PM
+-- Generation Time: Mar 01, 2016 at 09:24 PM
 -- Server version: 5.5.42
 -- PHP Version: 5.6.10
 
@@ -17,44 +17,30 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `image`
---
-
-CREATE TABLE `image` (
-  `id` int(11) NOT NULL,
-  `path` varchar(30) NOT NULL,
-  `user_id` int(10) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `image`
---
-
-INSERT INTO `image` (`id`, `path`, `user_id`) VALUES
-(2, '../img/9/8aafab3.jpg', 9),
-(3, '../img/11/930eaa6.jpg', 11),
-(4, '../img/11/57732a0.jpg', 11);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `item`
 --
 
 CREATE TABLE `item` (
   `id` int(11) NOT NULL,
-  `name` varchar(500) NOT NULL,
-  `description` varchar(500) NOT NULL,
-  `price` decimal(10,2) NOT NULL,
-  `img` varchar(500) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  `img` varchar(100) NOT NULL,
+  `user_id` int(10) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `description` varchar(100) NOT NULL,
+  `price` decimal(10,2) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `item`
 --
 
-INSERT INTO `item` (`id`, `name`, `description`, `price`, `img`) VALUES
-(1, 'iPhone', 'It''s a fucking phone, shithead.', '21.00', 'https://www.mobileincanada.com/images/news/telus-samsung-u410-open.gif');
+INSERT INTO `item` (`id`, `img`, `user_id`, `name`, `description`, `price`) VALUES
+(2, 'img/9/8aafab3.jpg', 9, 'jonathong', 'this is a jonathang', '15.00'),
+(3, 'img/11/930eaa6.jpg', 11, '', '', '0.00'),
+(24, 'img/9/adec284.jpg', 9, '', '', '0.00'),
+(25, 'img/9/4f98b42.jpg', 9, '', '', '0.00'),
+(26, 'img/9/17b4248.jpg', 9, '', '', '0.00'),
+(27, 'img/9/07e775c.jpg', 9, '', '', '0.00'),
+(28, 'img/9/83d32ac.jpg', 9, '', '', '0.00');
 
 -- --------------------------------------------------------
 
@@ -99,7 +85,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `username`, `password`, `img`, `admin`) VALUES
 (8, 'jonathan', '123', 'http://www.underconsideration.com/brandnewconference/2014/_images/speaker_lee_jonathan_lo-res.jpg', 1),
-(9, 'keith', '123', 'https://media.giphy.com/media/9MFsKQ8A6HCN2/giphy.gif', 1),
+(9, 'keith112', '123', 'https://i.ytimg.com/vi/d6eVUpPxLAs/hqdefault.jpg', 0),
 (11, 'logan', 'balls', 'https://media.licdn.com/mpr/mpr/shrinknp_200_200/AAEAAQAAAAAAAAB4AAAAJDViYzA2MTM2LTk3ZGQtNDgxMi04YzNhLTYwZjhmY2JkZjM3OA.jpg', 1);
 
 --
@@ -107,17 +93,11 @@ INSERT INTO `user` (`id`, `username`, `password`, `img`, `admin`) VALUES
 --
 
 --
--- Indexes for table `image`
---
-ALTER TABLE `image`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`);
-
---
 -- Indexes for table `item`
 --
 ALTER TABLE `item`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `msg`
@@ -139,15 +119,10 @@ ALTER TABLE `user`
 --
 
 --
--- AUTO_INCREMENT for table `image`
---
-ALTER TABLE `image`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
---
 -- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=29;
 --
 -- AUTO_INCREMENT for table `msg`
 --
@@ -163,10 +138,10 @@ ALTER TABLE `user`
 --
 
 --
--- Constraints for table `image`
+-- Constraints for table `item`
 --
-ALTER TABLE `image`
-  ADD CONSTRAINT `image_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+ALTER TABLE `item`
+  ADD CONSTRAINT `item_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `msg`

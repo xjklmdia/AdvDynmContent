@@ -15,7 +15,7 @@
         include ("connection.php");
         global $db;
         
-        $query = "INSERT INTO image (path, user_id) VALUES ('../img/".$_POST['user_id']."/".$filename.".jpg', '".$_POST['user_id']."')";
+        $query = "INSERT INTO item (img, user_id) VALUES ('img/".$_POST['user_id']."/".$filename.".jpg', '".$_POST['user_id']."')";
         $result = $db->query($query);
     }
 

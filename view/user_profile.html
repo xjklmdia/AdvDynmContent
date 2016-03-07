@@ -1,0 +1,187 @@
+
+<style>
+    img {
+        width: 50px;
+        height: auto;
+    }
+</style>
+
+
+<!-- Insert USER HTML 
+
+        <h3>INSERT A USER</h3>
+        <input type='text' id='username' placeholder='username'/>
+        <input type='password' id='password' placeholder='password'/>
+        <input type='text' id='img' placeholder='avatar'/>
+        <button id="sub">Register</button>
+
+        -->
+        
+		<h3>Login</h3>
+		<div id="login_panel">
+			<input type='text' id='login_username' placeholder='username'/>
+			<input type='password' id='login_password' placeholder='password'/>
+			<button id="login_sub">Login</button>
+		</div>
+		
+		<div id="update_panel">
+			<h3>Update Profile</h3>
+			<input type='text' id='update_username' placeholder='new username'/>
+			<input type='password' id='update_password' placeholder='new password'/>
+			<input type='text' id='update_img' placeholder='new avatar'/>
+			<button id="update_sub">Update</button>
+			
+        </div>
+
+		
+        <H3>ALL USERS</H3>
+        <div id="users"></div>
+
+
+    <script>
+        $(document).ready(function() {
+        var userDiv = document.getElementById("users");   
+        var userImgsDiv = document.getElementById("user_imgs");
+		var loginPanel = document.getElementById("login_panel");
+		var updatePanel = document.getElementById("update_panel");
+			
+        //USER LOGIN
+            
+        var user_id = -1;
+            
+        document.getElementById("login_sub").onclick = function(){
+            //connect and insert
+            $.ajax({
+                url:"controller/user_c.php",
+                type: "post",
+                dataType:"json",
+                data: {
+                    method:"login",
+                    username: document.getElementById("login_username").value,
+                    password: document.getElementById("login_password").value
+                },
+                success:function(resp){
+                    alert("Logged in!");
+                    user_id = resp[0].id;
+                    console.log(user_id);
+					var logoutBut = document.createElement("button"); 
+					logoutBut.innerHTML = "Logout";
+					
+					loginPanel.innerHTML = "";
+					loginPanel.appendChild(logoutBut);
+					
+					updatePanel.style.display = "block";
+					//logout function
+					logoutBut.onclick = function(){
+						var user_id = -1;
+						alert("Logged Out!");
+						location.reload();
+        			}
+                }
+            });
+        }
+		
+        //USER LOGOUT
+
+            //INSERT A USER
+            /*
+            document.getElementById("sub").onclick = function() {
+                //connect and insert
+                $.ajax({
+                    url: "../controller/user_c.php",
+                    type: "POST",
+                    dataType: "html",
+                    data: {
+                        method: "insert",
+                        username: document.getElementById("username").value,
+                        password: document.getElementById("password").value,
+                        img: document.getElementById("img").value,
+                        admin: document.getElementById("admin").value
+                    },
+                    success: function(resp) {
+                        alert("INSERT!");
+                    }
+                
+                });
+            }*/
+            
+            //VIEW ALL USERS
+            function viewUsers(){
+                $.ajax({
+                        url: "controller/user_c.php",
+                        type: "POST",
+                        dataType: "JSON",
+                        data: {
+                            method: "view"
+                        },
+                        success: function(resp) {
+                          for(var i = 0; i<resp.length; i++){
+                                var newdiv = document.createElement("h3");
+                                var newimg = document.createElement("div");    
+                                userDiv.appendChild(newdiv);
+                               	userDiv.appendChild(newimg);
+                                newdiv.innerHTML = resp[i].username +" admin: "+resp[i].admin;
+                                newimg.innerHTML = "<img src="+resp[i].img+" />";
+                              
+                                newdiv.dataset.id = resp[i].id;
+                              
+                          
+
+                      // DELETING USERNAME
+                      var user_del = document.createElement("button");
+                      user_del.dataset.id = resp[i].id;
+                      user_del.innerHTML = "Delete";
+                      newdiv.appendChild(user_del);
+                      user_del.onclick = function() {
+                        var user_id = this.dataset.id;
+                          console.log(user_id);
+                        $.ajax({
+                            url: "controller/user_c.php",
+                            dataType: "json",
+                            type: "POST",
+                            data: {
+                                method:"delete",
+                                id: user_id
+                            },
+                            success: function(resp){
+                                alert("DELETED!");
+                                location.reload();
+                            }
+                          
+                        });
+                    }
+                            }
+                        }
+                });
+            }
+            viewUsers();
+          
+            //UPDATE USER
+              document.getElementById('update_sub').onclick = function () {
+
+                  $.ajax({
+                      url:"controller/user_c.php",
+                      dataType:"HTML",
+                      data: {
+                          method: "update",
+                          new_username: document.getElementById("update_username").value,
+                          new_password: document.getElementById("update_password").value,
+                          new_img: document.getElementById("update_img").value,
+                          user_id: user_id
+                      },
+                      type:"POST",
+                      success: function(resp) {
+                          alert("Profile Updated!");
+						  document.getElementById("update_username").value = "";
+						  document.getElementById("update_password").value = "";
+						  document.getElementById("update_img").value = "";
+						  userDiv.innerHTML = "";
+						  
+                          console.log(user_id);
+						  viewUsers();
+                      }
+                  });
+              }
+              
+        });
+    </script>

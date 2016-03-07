@@ -1,0 +1,208 @@
+
+<style>
+    img {
+        width: 50px;
+        height: auto;
+    }
+</style>
+
+
+<!-- Insert USER HTML 
+
+        <h3>INSERT A USER</h3>
+        <input type='text' id='username' placeholder='username'/>
+        <input type='password' id='password' placeholder='password'/>
+        <input type='text' id='img' placeholder='avatar'/>
+        <button id="sub">Register</button>
+
+        -->
+        
+		<h3>Login</h3>
+		<div id="login_panel">
+			<input type='text' id='login_username' placeholder='username'/>
+			<input type='password' id='login_password' placeholder='password'/>
+			<button id="login_sub">Login</button>
+		</div>
+		
+		<div id="update_panel">
+			<h3>Upload an image</h3>
+			<form id='myForm'>
+				<input type='file' id='myFile' multiple>
+				<button id='upload'>Upload</button><br/>
+			</form>
+        </div>
+		
+		
+        <H3>ALL USER IMGS UPLOADED</H3>
+        <div id="user_imgs"></div>
+		
+
+
+    <script>
+        $(document).ready(function() {
+        var userDiv = document.getElementById("users");   
+        var userImgsDiv = document.getElementById("user_imgs");
+		var loginPanel = document.getElementById("login_panel");
+		var updatePanel = document.getElementById("update_panel");
+			
+        //USER LOGIN
+            
+        var user_id = -1;
+            
+        document.getElementById("login_sub").onclick = function(){
+            //connect and insert
+            $.ajax({
+                url:"controller/user_c.php",
+                type: "post",
+                dataType:"json",
+                data: {
+                    method:"login",
+                    username: document.getElementById("login_username").value,
+                    password: document.getElementById("login_password").value
+                },
+                success:function(resp){
+                    alert("Logged in!");
+                    user_id = resp[0].id;
+                    console.log(user_id);
+					var logoutBut = document.createElement("button"); 
+					logoutBut.innerHTML = "Logout";
+					
+					loginPanel.innerHTML = "";
+					loginPanel.appendChild(logoutBut);
+					
+					updatePanel.style.display = "block";
+					//logout function
+					logoutBut.onclick = function(){
+						var user_id = -1;
+						alert("Logged Out!");
+						location.reload();
+        			}
+                }
+            });
+        }
+		
+        //USER LOGOUT
+
+            //INSERT A USER
+            /*
+            document.getElementById("sub").onclick = function() {
+                //connect and insert
+                $.ajax({
+                    url: "../controller/user_c.php",
+                    type: "POST",
+                    dataType: "html",
+                    data: {
+                        method: "insert",
+                        username: document.getElementById("username").value,
+                        password: document.getElementById("password").value,
+                        img: document.getElementById("img").value,
+                        admin: document.getElementById("admin").value
+                    },
+                    success: function(resp) {
+                        alert("INSERT!");
+                    }
+                
+                });
+            }*/
+            
+              
+            //UPLOAD USER IMAGE
+            var upload = document.getElementById("upload");
+            var files = document.getElementById("myFile");
+
+            upload.onclick = function (e) {
+                e.preventDefault();
+                
+                //upload the files here using another form of ajax
+
+                var formData = new FormData();
+                
+                var xhr = new XMLHttpRequest();
+                var allfiles = files.files;
+                console.log(allfiles);
+
+                    for(var i=0; i<allfiles.length; i++) {
+
+                        //get individual file with var
+                        var e_file = allfiles[i];
+                        console.log(e_file);
+                        console.log(user_id);
+                        if (!e_file.type.match("image/*")) {
+							alert("Images Only!");
+                            return false;
+                        }
+
+                        formData.append("images[]", e_file, "whatever.name");
+                        formData.append("user_id", user_id);
+                        console.log(e_file);
+                        xhr.open("POST", "model/user_upload.php", true);
+                        xhr.onload = function() {
+                            if(xhr.status == 200) {
+                                alert("loaded properly");
+                            }   
+                        }
+                        
+                        //console.log(formData);
+                        xhr.send(formData);
+
+                    }
+                    userImgsDiv.innerHTML = "";
+                
+                    function viewUserImgs(){
+                        $.ajax({
+                                url: "controller/user_c.php",
+                                type: "POST",
+                                dataType: "JSON",
+                                data: {
+                                    method: "viewAllImg"
+                                },
+                                success: function(resp) {
+                                  for(var i = 0; i<resp.length; i++){
+                                var newdiv = document.createElement("h3");
+                                var newP = document.createElement("p");
+                                var newimg = document.createElement("div");    
+                                userImgsDiv.appendChild(newdiv);
+                                userImgsDiv.appendChild(newP);
+                                userImgsDiv.appendChild(newimg);
+                                
+                                newdiv.innerHTML = " Username: "+resp[i].username;
+                                newimg.innerHTML = "<img src="+resp[i].img+" />";
+                                newP.innerHTML = "$"+resp[i].price;
+
+                                    }
+                                }
+                        });
+                    }
+                    viewUserImgs();
+              
+                }
+			
+                //VIEW ALL USER IMGS
+            function viewUserImgs(){
+                $.ajax({
+                        url: "controller/user_c.php",
+                        type: "POST",
+                        dataType: "JSON",
+                        data: {
+                            method: "viewAllImg"
+                        },
+                        success: function(resp) {
+                          for(var i = 0; i<resp.length; i++){
+                                var newdiv = document.createElement("h3");
+                                var newP = document.createElement("p");
+                                var newimg = document.createElement("div");    
+                                userImgsDiv.appendChild(newdiv);
+                                userImgsDiv.appendChild(newP);
+                                userImgsDiv.appendChild(newimg);
+                                
+                                newdiv.innerHTML = " Username: "+resp[i].username;
+                                newimg.innerHTML = "<img src="+resp[i].img+" />";
+                                newP.innerHTML = "$"+resp[i].price;
+                            }
+                        }
+                });
+            }
+            viewUserImgs();
+              
+        });
+    </script>

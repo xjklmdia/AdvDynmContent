@@ -65,7 +65,7 @@
 //----------Inserting Items---------------------------------------------------
             document.getElementById("sub_item").onclick = function() {
                 $.ajax({
-                    url: "../controller/item_c.php",
+                    url: "controller/item_c.php",
                     type: "POST",
                     dataType: "html",
                     data: {
@@ -86,7 +86,7 @@
  //----------Viewing Items-----------------------------------------------------           
             function viewItems(){
                 $.ajax({
-                        url: "../controller/item_c.php",
+                        url: "controller/item_c.php",
                         type: "POST",
                         dataType: "JSON",
                         data: {
@@ -120,7 +120,7 @@
                                       var item_id = this.dataset.id;
                                       console.log(item_id);
                                         $.ajax({
-                                            url: "../controller/item_c.php",
+                                            url: "controller/item_c.php",
                                             dataType: "json",
                                             type: "POST",
                                             data: {
@@ -173,7 +173,7 @@
             document.getElementById('update_sub').onclick = function () {
 
                   $.ajax({
-                      url:"../controller/item_c.php",
+                      url:"controller/item_c.php",
                       dataType:"HTML",
                       data: {
                           method: "update",

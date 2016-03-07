@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html ng-app='MessageApp'>
+    <head>
+        <title>Telus</title>
+        <base href="/MDIA3109JKL/" />
+    </head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-route.js"></script>
+    <script src="js/newapp.js"></script>
+    <script src="js/controller.js"></script>
+    
+    <body>
+        <a href="#/reg">Register</a>
+        <a href="#/profile">Profile</a>
+        <a href="#/items">Items</a>
+        <a href="#/chat">Chat</a>
+        <!---
+        <h3>Login</h3>
+		<div id="login_panel">
+			<input type='text' id='login_username' placeholder='username'/>
+			<input type='password' id='login_password' placeholder='password'/>
+			<button id="login_sub">Login</button>
+		</div> -->
+        
+        <div ng-view>
+            
+        </div>
+    </body>
+    <script>
+        /*
+            $(document).ready(function() {
+        var userDiv = document.getElementById("users");   
+        var userImgsDiv = document.getElementById("user_imgs");
+		var loginPanel = document.getElementById("login_panel");
+		//var updatePanel = document.getElementById("update_panel");
+			
+        //USER LOGIN
+        var user_id = -1;
+        document.getElementById("login_sub").onclick = function(){
+            //connect and insert
+            $.ajax({
+                url:"controller/user_c.php",
+                type: "post",
+                dataType:"json",
+                data: {
+                    method:"login",
+                    username: document.getElementById("login_username").value,
+                    password: document.getElementById("login_password").value
+                },
+                success:function(resp){
+                    alert("Logged in!");
+                    user_id = resp[0].id;
+                    console.log(user_id);
+					var logoutBut = document.createElement("button"); 
+					logoutBut.innerHTML = "Logout";
+					
+					loginPanel.innerHTML = "";
+					loginPanel.appendChild(logoutBut);
+					
+					//updatePanel.style.display = "block";
+					//logout function
+					logoutBut.onclick = function(){
+						var user_id = -1;
+						alert("Logged Out!");
+						location.reload();
+        			}
+                }
+            });
+        }
+        
+            });
+    */
+    
+    
+    </script>
+</html>

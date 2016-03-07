@@ -1,0 +1,27 @@
+<h3>INSERT A USER</h3>
+<input type='text' id='username' placeholder='username'/>
+<input type='password' id='password' placeholder='password'/>
+<input type='text' id='img' placeholder='avatar'/>
+<button id="sub">Register</button>
+
+<script>
+    document.getElementById("sub").onclick = function() {
+        //connect and insert
+        $.ajax({
+            url: "../controller/user_c.php",
+            type: "POST",
+            dataType: "html",
+            data: {
+                method: "insert",
+                username: document.getElementById("username").value,
+                password: document.getElementById("password").value,
+                img: document.getElementById("img").value,
+                admin: document.getElementById("admin").value
+            },
+            success: function(resp) {
+                alert("INSERT!");
+            }
+
+        });
+    }
+</script>
