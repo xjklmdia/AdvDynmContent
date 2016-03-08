@@ -8,7 +8,7 @@
     document.getElementById("sub").onclick = function() {
         //connect and insert
         $.ajax({
-            url: "../controller/user_c.php",
+            url: "controller/user_c.php",
             type: "POST",
             dataType: "html",
             data: {
@@ -16,7 +16,7 @@
                 username: document.getElementById("username").value,
                 password: document.getElementById("password").value,
                 img: document.getElementById("img").value,
-                admin: document.getElementById("admin").value
+                //admin: document.getElementById("admin").value
             },
             success: function(resp) {
                 alert("INSERT!");

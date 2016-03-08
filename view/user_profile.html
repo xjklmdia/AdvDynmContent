@@ -61,7 +61,6 @@
                     password: document.getElementById("login_password").value
                 },
                 success:function(resp){
-                    alert("Logged in!");
                     user_id = resp[0].id;
                     console.log(user_id);
 					var logoutBut = document.createElement("button"); 
@@ -120,9 +119,8 @@
                                 var newimg = document.createElement("div");    
                                 userDiv.appendChild(newdiv);
                                	userDiv.appendChild(newimg);
-                                newdiv.innerHTML = resp[i].username +" admin: "+resp[i].admin;
+                                newdiv.innerHTML = resp[i].username + ' ';
                                 newimg.innerHTML = "<img src="+resp[i].img+" />";
-                              
                                 newdiv.dataset.id = resp[i].id;
                               
                           
